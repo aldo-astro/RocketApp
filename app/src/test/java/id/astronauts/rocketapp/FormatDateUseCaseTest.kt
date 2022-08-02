@@ -12,7 +12,7 @@ import java.util.*
 class FormatDateUseCaseTest {
 
     @Test
-    fun successCase() {
+    fun `success case`() {
         // Given
         val repo = object : UserRepository {
             override fun getPreferredDateFormat(): String {
@@ -36,7 +36,7 @@ class FormatDateUseCaseTest {
     }
 
     @Test
-    fun failCase() {
+    fun `fail case`() {
         // Given
         val repo = object : UserRepository {
             override fun getPreferredDateFormat(): String {
