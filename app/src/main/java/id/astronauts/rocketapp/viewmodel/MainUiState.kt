@@ -1,4 +1,4 @@
-package id.astronauts.rocketapp
+package id.astronauts.rocketapp.viewmodel
 
 sealed class MainUiState {
     object Loading : MainUiState()

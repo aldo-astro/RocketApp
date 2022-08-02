@@ -1,4 +1,4 @@
-package id.astronauts.rocketapp
+package id.astronauts.rocketapp.viewmodel
 
 sealed class MainUiEffect {
     object Vibrate : MainUiEffect()

@@ -1,18 +1,16 @@
-package id.astronauts.rocketapp
+package id.astronauts.rocketapp.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import id.astronauts.rocketapp.usecases.GetFormattedNewsUseCase
-import id.astronauts.rocketapp.usecases.GetLatestNewsWithAuthorsUseCase
 import id.astronauts.rocketapp.usecases.NewsRepository
 import kotlinx.coroutines.launch
 
-class MainViewModel(
+class NewsViewModel(
     private val newsRepository: NewsRepository,
     private val getFormattedNewsUseCase: GetFormattedNewsUseCase,
-    private val getLatestNewsWithAuthorsUseCase: GetLatestNewsWithAuthorsUseCase
 ) : ViewModel() {
 
     private val _mainUiState = MutableLiveData<MainUiState>()
@@ -33,24 +31,25 @@ class MainViewModel(
         }
     }
 
-    fun getFormattedNews() {
+    fun getFormattedNews1() {
         viewModelScope.launch {
-            val result = getFormattedNewsUseCase()
+            val result: Result<List<String>> = getFormattedNewsUseCase()
             if (result.isSuccess) {
                 _mainUiState.value = MainUiState.Success(result.getOrThrow())
             } else {
                 mainUiEffect.value = MainUiEffect.Vibrate
             }
-            // or
+        }
+    }
+
+    fun getFormattedNews2() {
+        viewModelScope.launch {
+            val result: Result<List<String>> = getFormattedNewsUseCase()
             result.fold({
                 _mainUiState.value = MainUiState.Success(result.getOrThrow())
             }, {
                 mainUiEffect.value = MainUiEffect.Vibrate
             })
         }
-    }
-
-    fun getLatestNewsWithAuthorUseCase() {
-        viewModelScope.launch { getLatestNewsWithAuthorsUseCase() }
     }
 }
