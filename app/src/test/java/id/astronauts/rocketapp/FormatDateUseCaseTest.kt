@@ -3,6 +3,7 @@ package id.astronauts.rocketapp
 import id.astronauts.rocketapp.usecases.FormatDateUseCase
 import id.astronauts.rocketapp.usecases.UserRepository
 import junit.framework.Assert.assertEquals
+import junit.framework.Assert.assertTrue
 import org.junit.Test
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -32,5 +33,29 @@ class FormatDateUseCaseTest {
         // Then
         val expected = "17 Agt, 10:15"
         assertEquals(actual, expected)
+    }
+
+    @Test
+    fun failCase() {
+        // Given
+        val repo = object : UserRepository {
+            override fun getPreferredDateFormat(): String {
+                return "dd MMM, HH:mm"
+            }
+
+            override fun getPreferredLocale(): Locale {
+                throw IllegalStateException()
+            }
+        }
+
+        // When
+        val result = runCatching {
+            val useCase = FormatDateUseCase(repo)
+            useCase(Date(System.currentTimeMillis()))
+        }
+
+        // Then
+        assertTrue(result.isFailure)
+        assertTrue(result.exceptionOrNull() is IllegalStateException)
     }
 }
