@@ -16,6 +16,8 @@ class LatestNewsViewModel(
         get() = _mainUiState
 
     fun getLatestNewsWithAuthor() {
-        viewModelScope.launch { getLatestNewsWithAuthorsUseCase() }
+        viewModelScope.launch {
+            getLatestNewsWithAuthorsUseCase()
+        }
     }
 }

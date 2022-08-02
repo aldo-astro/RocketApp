@@ -18,7 +18,7 @@ import java.util.*
 class NewsViewModelTest {
 
     @Test
-    fun `assert state is correct`() {
+    fun `assert getNews state is correct`() {
         // Given
         val newsRepo = object : NewsRepository {
             override fun fetchLatestNews(): List<String> {
