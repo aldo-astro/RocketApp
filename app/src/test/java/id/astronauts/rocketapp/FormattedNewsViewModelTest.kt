@@ -4,8 +4,8 @@ import id.astronauts.rocketapp.usecases.FormatDateUseCase
 import id.astronauts.rocketapp.usecases.GetFormattedNewsUseCase
 import id.astronauts.rocketapp.usecases.NewsRepository
 import id.astronauts.rocketapp.usecases.UserRepository
+import id.astronauts.rocketapp.viewmodel.FormattedNewsViewModel
 import id.astronauts.rocketapp.viewmodel.MainUiState
-import id.astronauts.rocketapp.viewmodel.NewsViewModel
 import junit.framework.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -15,7 +15,7 @@ import java.util.*
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [31])
-class NewsViewModelTest {
+class FormattedNewsViewModelTest {
 
     @Test
     fun `assert getNews state is correct`() {
@@ -35,16 +35,16 @@ class NewsViewModelTest {
             }
         }
         val formatDateUseCase = FormatDateUseCase(userRepo)
-        val newsViewModel =
-            NewsViewModel(newsRepo, GetFormattedNewsUseCase(newsRepo, formatDateUseCase))
+        val formattedNewsViewModel =
+            FormattedNewsViewModel(newsRepo, GetFormattedNewsUseCase(newsRepo, formatDateUseCase))
 
         val listOfStates = mutableListOf<MainUiState>()
-        newsViewModel.mainUiState.observeForever {
+        formattedNewsViewModel.mainUiState.observeForever {
             listOfStates.add(it)
         }
 
         // When
-        newsViewModel.getNews()
+        formattedNewsViewModel.getNews()
 
         // Then
         assertTrue(listOfStates.size == 2)

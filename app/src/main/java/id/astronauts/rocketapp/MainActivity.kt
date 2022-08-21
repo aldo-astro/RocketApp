@@ -11,8 +11,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import id.astronauts.rocketapp.ui.theme.RocketAppTheme
+import id.astronauts.rocketapp.viewmodel.MainUiState
+import id.astronauts.rocketapp.viewmodel.NewsViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
+
+    private val newsViewMode: NewsViewModel by viewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -22,7 +28,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+                    newsViewMode.getNews()
                 }
             }
         }
@@ -30,14 +36,18 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
+fun Greeting(mainUiState: MainUiState) {
+    when (mainUiState) {
+        is MainUiState.Loading -> Text("Loading")
+        is MainUiState.Fail -> Text("Fail")
+        is MainUiState.Success -> Text(mainUiState.news.first())
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     RocketAppTheme {
-        Greeting("Android")
+        Greeting(MainUiState.Success(listOf("News 1")))
     }
 }
