@@ -8,6 +8,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import id.astronauts.rocketapp.ui.theme.RocketAppTheme
@@ -17,7 +19,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
-    private val newsViewMode: NewsViewModel by viewModel()
+    private val newsViewModel: NewsViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +30,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    newsViewMode.getNews()
+                    val state by newsViewModel.mainUiState.observeAsState(MainUiState.Loading)
+                    Greeting(mainUiState = state)
+                    newsViewModel.getNews()
                 }
             }
         }
